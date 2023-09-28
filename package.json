@@ -2,8 +2,8 @@
   "name": "privy-validator",
   "version": "1.0.0",
   "description": "validator express",
-  "main": "./build/lib/index.js",
-  "types": "./build/dist/index.d.ts",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "ts-node ./src/test/index.test.ts",
