@@ -1,0 +1,27 @@
+{
+  "name": "privy-validator",
+  "version": "1.0.0",
+  "description": "validator express",
+  "main": "./build/lib/index.js",
+  "types": "./build/dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node ./src/test/index.test.ts",
+    "release:patch": "npm run build && git add . && git commit && npm version patch",
+    "release:minor": "npm run build && git add . && git commit && npm version minor",
+    "release:major": "npm run build && git add . && git commit && npm version major"
+  },
+  "keywords": [
+    "express",
+    "validator",
+    "express validator",
+    "request validator",
+    "request body validator",
+    "simple validator"
+  ],
+  "author": "trackingX",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.7.0"
+  }
+}
