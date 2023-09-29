@@ -34,7 +34,7 @@ npm install privy-validator
 ```
 Common JS
 ```javascript
-const Validator = require('privy-validator');
+const Validator = require('privy-validator').default;
 ```
 ES modules
 ```javascript
