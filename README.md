@@ -270,12 +270,12 @@ app.post('/register', async (request, response) => {
     const validator = await Validator.make(request.body, {
         username: { required: true, type: 'string' },
         email: { required: true, type: 'email', custom: async (email) => {
-            // make unique validation with custom
+            // make unique validation with schema custom
             const user = await User.findOne({ where: { email }});
             if(user) throw new Error('email already exists');
         }},
         password: {
-            required: true, type: 'string', max: 60,
+            required: true, type: 'string', min:8, max: 60,
             regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/
         }
     }, { // make customize message 
@@ -292,5 +292,7 @@ app.post('/register', async (request, response) => {
     // create a new user here...
 });
 ```
+
+[![Downloads](https://badgen.net/npm/dt/privy-validator)](https://www.npmjs.com/package/privy-validator)
 
 

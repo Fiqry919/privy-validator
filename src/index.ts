@@ -139,7 +139,7 @@ export default class Validator {
                 /**
                  * digits between
                  */
-                if (schema.digitsBetween && isDate(entries)) {
+                if (schema.digitsBetween) {
                     const [min, max] = schema.digitsBetween;
                     const digits = parseDigit(entries);
                     if (digits < min || digits > max) {

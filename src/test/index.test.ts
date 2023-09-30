@@ -12,7 +12,7 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
     const body: any = { foo, bar }
 
     const validator = await Validator.make(body, {
-        foo: { required: true, type: "number", digits: 4 },
+        foo: { required: true, type: "number", digitsBetween: [4, 8] },
         bar: {
             required: true, type: "string", min: 8,
             regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/,
