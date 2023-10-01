@@ -1,6 +1,6 @@
 {
   "name": "privy-validator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "validator express",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
