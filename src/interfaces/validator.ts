@@ -48,6 +48,14 @@ export enum Message {
      */
     BETWEEN = "The :attribute must be between :min - :max",
     /**
+     * date between message
+     */
+    DATE_BETWEEN = "The :attribute must be between :min to :max",
+    /**
+     * digits between message
+     */
+    DIGITS_BETWEEN = "The :attribute must be between :min - :max digits",
+    /**
      * regex message
      */
     REGEX = "The :attribute does not match with required pattern",
@@ -217,15 +225,17 @@ export interface Schema {
     confirmed?: boolean
     /**
      * custom is a schema that you have specified. 
-     * where this scheme will return `Promise<void>` | `undefined`.
+     * where this scheme will return `Promise<void>` | `undefined`. 
+     * ```
+     * ```
+     * a catch-block container is provided, so you can throw an error when the value is invalid.
      * @example
      * ```js
      * custom: async (value) => {
-     *   const user = await User.findOne({ where: { value } });
-     *   if (user) throw new Error("your message");
+     *   const foo = await Foo.findOne({ where: { bar: value }});
+     *   if (!foo) throw new Error("Foo not found");
      * }
      * ```
-     * @returns Promise<void>
      */
     custom?: (value: any) => Promise<void>
 }

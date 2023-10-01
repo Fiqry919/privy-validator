@@ -34,7 +34,7 @@ npm install privy-validator
 ```
 Common JS
 ```javascript
-const Validator = require('privy-validator').default;
+const Validator = require("privy-validator").default;
 ```
 ES modules
 ```javascript
@@ -278,7 +278,7 @@ app.post('/register', async (request, response) => {
             required: true, type: 'string', min:8, max: 60,
             regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/
         }
-    }, { // make customize message 
+    }, { // customize message 
         password: {
             regex: "The :attribute must contain at least one uppercase, number, and special character." 
         }
@@ -292,7 +292,7 @@ app.post('/register', async (request, response) => {
     // create a new user here...
 });
 ```
-
+##
 [![Downloads](https://badgen.net/npm/dt/privy-validator)](https://www.npmjs.com/package/privy-validator)
 
 

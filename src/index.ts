@@ -17,19 +17,20 @@ export default class Validator {
 
     /**
      * make a validation
-     * @param body - request body or any data for validate 
+     * @param data - request body or any typeof object for validate 
      * @param validationSchema - validation schema
      * @param customMessage - custom message
      * @return Validator
      */
     static async make(data: any, validationSchema: ValidationSchema, customMessage?: CustomMessage) {
-        if (typeof data != 'object') throw new Error("Invalid argument");
+        if (typeof data != 'object') this.invalid("Invalid argument of data"); // data is not object
         for (const key of Object.keys(data)) {
-            if (!isNaN(Number(key))) throw new Error("Invalid argument, typeof key must be string");
+            if (!isNaN(Number(key))) this.invalid("Invalid argument typeof key"); // typeof key is not string
         }
         const Errors: any = {}
 
         for (const [attribute, schema] of Object.entries(validationSchema)) {
+            if (!schema.type) this.invalid("Invalid argument of type"); // empty schema type
             const entries = data[attribute];
             const error: string[] = [];
             /**
@@ -124,6 +125,7 @@ export default class Validator {
                  * between
                  */
                 if (schema.between && (entries < schema.between[0] || entries > schema.between[1])) {
+                    if (schema.between.length != 2) this.invalid("Invalid argument of between");
                     const [min, max] = schema.between;
                     error.push(this.setError(customMessage?.[attribute]?.between || Message.BETWEEN, attribute, { min, max }));
                 }
@@ -131,19 +133,21 @@ export default class Validator {
                  * date between
                  */
                 if (schema.dateBetween && isDate(entries)) {
+                    if (schema.dateBetween.length != 2) this.invalid("Invalid argument of date between");
                     const [min, max] = schema.dateBetween;
                     if (!dateRange(entries, min, max)) {
-                        error.push(this.setError(customMessage?.[attribute]?.dateBetween || Message.BETWEEN, attribute, { min, max }));
+                        error.push(this.setError(customMessage?.[attribute]?.dateBetween || Message.DATE_BETWEEN, attribute, { min, max }));
                     }
                 }
                 /**
                  * digits between
                  */
                 if (schema.digitsBetween) {
+                    if (schema.digitsBetween.length != 2) this.invalid("Invalid argument of digits between");
                     const [min, max] = schema.digitsBetween;
                     const digits = parseDigit(entries);
                     if (digits < min || digits > max) {
-                        error.push(this.setError(customMessage?.[attribute]?.digitsBetween || Message.BETWEEN, attribute, { min, max }));
+                        error.push(this.setError(customMessage?.[attribute]?.digitsBetween || Message.DIGITS_BETWEEN, attribute, { min, max }));
                     }
                 }
                 /**
@@ -157,9 +161,11 @@ export default class Validator {
                  * custom
                  */
                 if (schema.custom) {
-                    await schema.custom(entries).catch(e => {
+                    try {
+                        await schema.custom(entries);
+                    } catch (e: any) {
                         error.push(customMessage?.[attribute]?.custom || (<Error>e).message || e.toString());
-                    });
+                    }
                 }
                 /**
                  * confirmed
@@ -167,9 +173,7 @@ export default class Validator {
                 if (schema.confirmed) {
                     const confirmValue = data[`${attribute}_confirmation`];
                     if (confirmValue !== entries) {
-                        error.push(
-                            this.setError(customMessage?.[attribute]?.confirmed || Message.CONFIRMED, attribute)
-                        );
+                        error.push(this.setError(customMessage?.[attribute]?.confirmed || Message.CONFIRMED, attribute));
                     }
                 }
             } // end elseif
@@ -179,7 +183,6 @@ export default class Validator {
 
         return new Validator(Object.keys(Errors).length === 0, Errors);
     }
-
     /**
      * set error message
      * @return string
@@ -193,4 +196,9 @@ export default class Validator {
         }
         return errorMessage
     }
+    /**
+     * set invalid argument
+     * @returns Error
+     */
+    private static invalid(message: string) { throw new Error(message); }
 }

@@ -11,7 +11,17 @@ export function isEmail(x: string): boolean { return /^[^\s@]+@[^\s@]+\.[^\s@]+$
  * @returns number
  */
 export function parseDigit(x: any): number {
-    return typeof x === 'number' ? Math.abs(x).toString().length : x.match(/-?\d+(\.\d+)?/g).join('').length;
+    switch (typeof x) {
+        case 'number':
+            return Math.abs(x).toString().length;
+        case 'string':
+            return Math.abs(Number(x.replace(/\D/g, ''))).toString().length;
+        case 'object':
+            if (Array.isArray(x)) return x.length;
+            return Object.keys(x).length;
+        default:
+            return NaN;
+    }
 }
 /**
  * @return RegExp
@@ -37,23 +47,20 @@ export function isDate(x: string): boolean {
     return true;
 }
 /**
+ * @returns boolean
+ */
+export function isPositiveInt(x: any): boolean {
+    const n = Math.floor(Number(x));
+    return n !== Infinity && String(n) === x && n >= 0;
+}
+/**
  * 
  * @returns boolean
  */
 export function dateRange(date: string, min?: string, max?: string): boolean {
     const value = new Date(date);
-    const after = min ? new Date(min) : undefined;
-    const before = max ? new Date(max) : undefined;
+    const after = min ? new Date(min) : min;
+    const before = max ? new Date(max) : max;
 
     return (after && before) ? (value >= after && value <= before) : after ? (value > after) : before ? (value < before) : false;
-}
-/**
- * 
- * @returns number
- */
-export function getSize(x: any): number {
-    if (typeof x === 'number') return Math.abs(x).toString().length;
-    else if (Array.isArray(x)) return x.length;
-    else if (typeof x === 'object') return Object.keys(x).length;
-    else return 0;
 }
