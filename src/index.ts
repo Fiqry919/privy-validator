@@ -124,10 +124,10 @@ export default class Validator {
                 /**
                  * between
                  */
-                if (schema.between && (entries < schema.between[0] || entries > schema.between[1])) {
+                if (schema.between) {
                     if (schema.between.length != 2) this.invalid("Invalid argument of between");
                     const [min, max] = schema.between;
-                    error.push(this.setError(customMessage?.[attribute]?.between || Message.BETWEEN, attribute, { min, max }));
+                    if (entries < min || entries > max) error.push(this.setError(customMessage?.[attribute]?.between || Message.BETWEEN, attribute, { min, max }));
                 }
                 /**
                  * date between

@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "ts-node ./src/test/index.test.ts",
+    "publish": "npm publish --access public",
     "release:patch": "npm run build && git add . && git commit && npm version patch",
     "release:minor": "npm run build && git add . && git commit && npm version minor",
     "release:major": "npm run build && git add . && git commit && npm version major"
