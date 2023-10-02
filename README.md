@@ -1,3 +1,9 @@
+###
+[![NPM Version](https://img.shields.io/npm/v/privy-validator.svg)](https://www.npmjs.org/package/privy-validator)
+[![license](https://img.shields.io/npm/l/privy-validator)](https://www.npmjs.org/package/privy-validator)
+[![Downloads](https://img.shields.io/npm/dt/privy-validator)](https://www.npmjs.com/package/privy-validator)
+[![Install Size](https://packagephobia.now.sh/badge?p=privy-validator)](https://packagephobia.now.sh/result?p=privy-validator)
+
 ## Introduction
 
 <b>privy-validator</b> is validator request, building for express. it can work in middleware or your function like a controllers.<br/>
@@ -292,7 +298,6 @@ app.post('/register', async (request, response) => {
     // create a new user here...
 });
 ```
-##
-[![Downloads](https://badgen.net/npm/dt/privy-validator)](https://www.npmjs.com/package/privy-validator)
+
 
 
