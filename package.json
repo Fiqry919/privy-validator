@@ -3,8 +3,8 @@
   "version": "1.0.5",
   "description": "validator express",
   "license": "MIT",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "ts-node ./src/test/index.test.ts",

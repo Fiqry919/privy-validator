@@ -8,13 +8,11 @@ export default class Validator {
      * @return boolean
      */
     validate() { return this.state }
-
     /**
      * getting errors validation
      * @return string[]
      */
     errors() { return this.error }
-
     /**
      * make a validation
      * @param data - request body or any typeof object for validate 
@@ -103,10 +101,6 @@ export default class Validator {
                     const value = parseDigit(entries);
                     if (value !== digit) error.push(this.setError(customMessage?.[attribute]?.digits || Message.DIGITS, attribute, { digit }));
                 }
-                /**
-                 * size
-                 */
-                // if (schema.size) {/** coming soon (for global/any need type mime:jpeg,etc) */ }
                 /**
                  * in
                  */
@@ -198,7 +192,7 @@ export default class Validator {
     }
     /**
      * set invalid argument
-     * @returns Error
+     * @throw Error
      */
-    private static invalid(message: string) { throw new Error(message); }
+    private static invalid(args: string) { throw new TypeError(args); }
 }
