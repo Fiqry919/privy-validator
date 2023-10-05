@@ -7,16 +7,28 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
 (async () => {
     start();
 
-    const foo: any = await input("foo:");
-    const bar: any = await input("bar:");
-    const body: any = { foo, bar }
+    const username: any = await input("username:");
+    const email: any = await input("email:");
+    const password: any = await input("password:");
+    const body: any = { username, email, password }
 
     const validator = await Validator.make(body, {
-        foo: { required: true, type: "number", digitsBetween: [4, 8] },
-        bar: {
-            required: true, type: "string", min: 8,
-            regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/,
+        username: { required: true, type: 'string' },
+        email: {
+            required: true, type: 'email', custom: async (email) => {
+                // make unique validation with schema custom
+                // const user = await User.findOne({ where: { email } });
+                // if (user) throw new Error('email already exists');
+            }
         },
+        password: {
+            required: true, type: 'string', min: 8, max: 60,
+            regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/
+        }
+    }, { // customize message 
+        password: {
+            regex: "The :attribute must contain at least one uppercase, number, and special character."
+        }
     });
 
     if (!validator.validate()) console.error(validator.errors());

@@ -56,6 +56,10 @@ schema required is a schema that indicates the value must exist not contain `und
 ```javascript
 Validator.make(request.body, { foo: { required: true } });
 ```
+then when got an error message
+```js
+{ foo: [ 'The foo is required' ] }
+```
 
 ### Type
 a type schema is a schema that specifies what type of data a value should be, for now schema types consist of
@@ -66,13 +70,20 @@ because types should be consistent, therefore types must be defined, cannot be u
 ```javascript
 Validator.make(request.body, { foo: { type: 'string' } });
 ```
+then when got an error message
+```js
+{ foo: [ 'The foo must be string' ] }
+```
 
 ### Min
 schema min is a schema that indicates the length of the value must be more than or equal to minimum, this schema consist of `number` | `undefined`. Here's the usage min :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string', min: 8 } });
 ```
-because min calculates from its length, then can work well when type `string` | `array`.
+because min calculates from its length, then can work well when type `string` | `array`. then when got an error message and the next error message will be similar.
+```js
+{ foo: [ 'The foo must be minimum 8 characters' ] }
+```
 
 ### Max
 schema max is a schema that indicates the length of the value must be less than or equal to maximum, this schema similar to schema min. Here's the usage max :
@@ -297,6 +308,17 @@ app.post('/register', async (request, response) => {
 
     // create a new user here...
 });
+```
+then example when got error message
+```js
+{
+  username: [ 'The username is required' ],
+  email: [ 'The email must be valid email' ],
+  password: [
+    'The password must be minimum 8 characters',
+    'The password must contain at least one uppercase, number, and special character.'
+  ]
+}
 ```
 
 
