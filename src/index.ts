@@ -2,7 +2,7 @@ import { ValidationSchema, CustomMessage, Message } from "./interfaces/validator
 import { dateRange, isDataType, isDate, isEmail, parseDigit } from "./common/validator";
 
 export default class Validator {
-    private constructor(private state: boolean, private error: string[]) { }
+    private constructor(private state: boolean, private error: Record<string, string[]>) { }
     /**
      * checking validation status
      * @return boolean
