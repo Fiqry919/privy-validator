@@ -1,8 +1,8 @@
-import { ValidationSchema, CustomMessage, Message } from "./interfaces/validator"
+import { ValidationSchema, CustomMessage, Message, ValidationErrors } from "./interfaces/validator"
 import { dateRange, isDataType, isDate, isEmail, parseDigit } from "./common/validator";
 
-export default class Validator {
-    private constructor(private state: boolean, private error: Record<string, string[]>) { }
+export default class Validator<T> {
+    private constructor(private state: boolean, private error: ValidationErrors<T>) { }
     /**
      * checking validation status
      * @return boolean
@@ -25,7 +25,7 @@ export default class Validator {
         for (const key of Object.keys(data)) {
             if (!isNaN(Number(key))) this.invalid("Invalid argument typeof key"); // typeof key is not string
         }
-        const Errors: any = {}
+        const Errors: ValidationErrors<T> = {}
 
         for (const [attribute, schema] of Object.entries(validationSchema)) {
             if (!schema?.type) this.invalid("Invalid argument of type"); // empty schema type
@@ -158,7 +158,7 @@ export default class Validator {
                     try {
                         await schema.custom(entries);
                     } catch (e: any) {
-                        error.push(customMessage?.[attribute]?.custom || (<Error>e).message || e.toString());
+                        error.push(customMessage?.[attribute]?.custom || customMessage?.["*"]?.custom || (<Error>e).message || e.toString());
                     }
                 }
                 /**
@@ -167,13 +167,14 @@ export default class Validator {
                 if (schema?.confirmed) {
                     const confirmValue = data[`${attribute}_confirmation`];
                     if (confirmValue !== entries) {
-                        customMessage?.['*']
-                        error.push(this.setError(customMessage?.[attribute]?.confirmed || Message.CONFIRMED, attribute));
+                        error.push(this.setError(customMessage?.[attribute]?.confirmed || customMessage?.["*"]?.confirmed || Message.CONFIRMED, attribute));
                     }
                 }
             } // end elseif
 
-            if (error.length) Errors[attribute] = error;
+            if (error.length) {
+                (<string[]>Errors[attribute]) = error;
+            }
         }
 
         return new Validator(Object.keys(Errors).length === 0, Errors);

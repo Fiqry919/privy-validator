@@ -251,4 +251,7 @@ export type ValidationSchema<T> = { [P in keyof T]?: Schema }
  * Custom message validation
  */
 export type CustomMessage<T> = { [P in keyof T | '*']?: Type<Schema, string> }
-
+/**
+ * Validation errors
+ */
+export type ValidationErrors<T> = { [P in keyof T]?: string[] }
