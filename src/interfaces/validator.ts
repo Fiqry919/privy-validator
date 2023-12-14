@@ -246,8 +246,9 @@ export type Type<T, L = keyof T> = { [P in keyof T]?: L }
 /**
  * Schema validation
  */
-export type ValidationSchema = Record<string, Schema>
+export type ValidationSchema<T> = { [P in keyof T]?: Schema }
 /**
  * Custom message validation
  */
-export type CustomMessage = Record<string, Type<Schema, string>>
+export type CustomMessage<T> = { [P in keyof T | '*']?: Type<Schema, string> }
+
