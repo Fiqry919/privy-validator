@@ -2,7 +2,7 @@ import { ValidationSchema, CustomMessage, Message, ValidationErrors } from "./in
 import { dateRange, isDataType, isDate, isEmail, parseDigit } from "./common/validator";
 
 export default class Validator<T> {
-    private constructor(private state: boolean, private error: ValidationErrors<T>) { }
+    private constructor(private state: boolean, private error: { [key in keyof T]?: string[] }) { }
     /**
      * checking validation status
      * @return boolean
@@ -25,7 +25,7 @@ export default class Validator<T> {
         for (const key of Object.keys(data)) {
             if (!isNaN(Number(key))) this.invalid("Invalid argument typeof key"); // typeof key is not string
         }
-        const Errors: ValidationErrors<T> = {}
+        const Errors: any = {}
 
         for (const [attribute, schema] of Object.entries(validationSchema)) {
             if (!schema?.type) this.invalid("Invalid argument of type"); // empty schema type
@@ -173,11 +173,11 @@ export default class Validator<T> {
             } // end elseif
 
             if (error.length) {
-                (<string[]>Errors[attribute]) = error;
+                Errors[attribute] = error;
             }
         }
 
-        return new Validator(Object.keys(Errors).length === 0, Errors);
+        return new Validator(Object.keys(Errors).length === 0, <ValidationErrors<T>>Errors);
     }
     /**
      * set error message

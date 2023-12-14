@@ -7,10 +7,10 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
 (async () => {
     start();
 
-    const username: any = await input("username:");
-    const email: any = await input("email:");
-    const password: any = await input("password:");
-    const body: any = { username, email, password }
+    const username = await input("username:");
+    const email = await input("email:");
+    const password = await input("password:");
+    const body = { username, email, password }
 
     const validator = await Validator.make(body, {
         username: { required: true, type: 'string' },
