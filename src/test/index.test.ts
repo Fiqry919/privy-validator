@@ -8,7 +8,7 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
     start();
 
     const username = await input("username:");
-    const email = await input("email:");
+    const email = null;
     const password = await input("password:");
     const body = { username, email, password }
 

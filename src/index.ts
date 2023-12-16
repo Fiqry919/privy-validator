@@ -34,7 +34,7 @@ export default class Validator<T> {
             /**
              * required
              */
-            if (schema?.required && (typeof entries === 'undefined' || entries === '')) {
+            if (schema?.required && (!entries || entries === '')) {
                 error.push(this.setError(customMessage?.[attribute]?.required || customMessage?.["*"]?.required || Message.REQUIRED, attribute));
             } else if (typeof entries !== 'undefined') {
                 /**

@@ -242,16 +242,25 @@ export interface Schema {
 /**
  * make all partial optional with specific or default value
  */
-export type Type<T, L = keyof T> = { [P in keyof T]?: L }
+export type Type<T, L = keyof T> = {
+    [P in keyof T]?: L
+}
 /**
  * Schema validation
  */
-export type ValidationSchema<T> = { [P in keyof T]?: Schema }
+export type ValidationSchema<T> = {
+    [P in keyof T]?: Schema
+}
 /**
  * Custom message validation
  */
-export type CustomMessage<T> = { [P in keyof T | '*']?: Type<Schema, string> }
+export type CustomMessage<T> = {
+    [P in keyof T | '*']?: Type<Schema, string>
+}
 /**
  * Validation errors
  */
-export type ValidationErrors<T> = { [key in keyof T]?: string[] }
+export type ValidationErrors<T> = {
+    [P in keyof T]?: string[]
+}
+
