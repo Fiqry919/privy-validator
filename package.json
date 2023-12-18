@@ -1,6 +1,6 @@
 {
   "name": "privy-validator",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "validator express",
   "license": "MIT",
   "main": "./dist/index.js",
