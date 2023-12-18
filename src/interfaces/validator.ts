@@ -237,7 +237,7 @@ export interface Schema {
      * }
      * ```
      */
-    custom?: (value: any) => Promise<void>
+    custom?: (value: any) => Promise<void> | void
 }
 /**
  * make all partial optional with specific or default value

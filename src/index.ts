@@ -31,6 +31,7 @@ export default class Validator<T> {
             if (!schema?.type) this.invalid("Invalid argument of type"); // empty schema type
             const entries = data[attribute];
             const error: string[] = [];
+            const errorConfirm: string[] = [];
             /**
              * required
              */
@@ -167,13 +168,14 @@ export default class Validator<T> {
                 if (schema?.confirmed) {
                     const confirmValue = data[`${attribute}_confirmation`];
                     if (confirmValue !== entries) {
-                        error.push(this.setError(customMessage?.[attribute]?.confirmed || customMessage?.["*"]?.confirmed || Message.CONFIRMED, attribute));
+                        errorConfirm.push(this.setError(customMessage?.[attribute]?.confirmed || customMessage?.["*"]?.confirmed || Message.CONFIRMED, attribute));
                     }
                 }
             } // end elseif
 
             if (error.length) {
                 Errors[attribute] = error;
+                if (errorConfirm.length) Errors[`${attribute}_confirmation`] = errorConfirm;
             }
         }
 

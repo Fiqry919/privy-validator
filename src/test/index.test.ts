@@ -8,7 +8,7 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
     start();
 
     const username = await input("username:");
-    const email = null;
+    const email = await input("email:");
     const password = await input("password:");
     const body = { username, email, password }
 
@@ -18,11 +18,11 @@ const input = (query: any) => new Promise((resolve) => read.question(query, reso
             required: true, type: 'email', custom: async (email) => {
                 // make unique validation with schema custom
                 // const user = await User.findOne({ where: { email } });
-                // if (user) throw new Error('email already exists');
+                // if (email) throw new Error('email already exists');
             }
         },
         password: {
-            required: true, type: 'string', min: 8, max: 60,
+            required: true, type: 'string', min: 8, max: 60, confirmed: true,
             regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&.*]).{8,}$/
         }
     }, { // customize message 
