@@ -175,7 +175,9 @@ export default class Validator<T> {
 
             if (error.length) {
                 Errors[attribute] = error;
-                if (errorConfirm.length) Errors[`${attribute}_confirmation`] = errorConfirm;
+            }
+            if (errorConfirm.length) {
+                Errors[`${attribute}_confirmation`] = errorConfirm;
             }
         }
 
