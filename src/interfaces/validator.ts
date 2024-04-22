@@ -249,7 +249,7 @@ export type Type<T, L = keyof T> = {
  * Schema validation
  */
 export type ValidationSchema<T> = {
-    [P in keyof T]?: Schema
+    [P in keyof T]?: Schema | string
 }
 /**
  * Custom message validation

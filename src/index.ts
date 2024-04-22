@@ -1,4 +1,4 @@
-import { ValidationSchema, CustomMessage, Message, ValidationErrors } from "./interfaces/validator"
+import { ValidationSchema, CustomMessage, Message, ValidationErrors, Schema } from "./interfaces/validator"
 import { dateRange, isDataType, isDate, isEmail, parseDigit } from "./common/validator";
 
 export default class Validator<T> {
@@ -27,7 +27,12 @@ export default class Validator<T> {
         }
         const Errors: any = {}
 
-        for (const [attribute, schema] of Object.entries(validationSchema)) {
+        for (const [attribute, value] of Object.entries(validationSchema)) {
+            let schema = <Schema>value
+            if (schema && typeof schema === 'string') {
+                schema = this.parse(schema) as Schema
+            }
+
             if (!schema?.type) this.invalid("Invalid argument of type"); // empty schema type
             const entries = data[attribute];
             const error: string[] = [];
@@ -201,4 +206,32 @@ export default class Validator<T> {
      * @throw Error
      */
     private static invalid(args: string) { throw new TypeError(args); }
+    /**
+     * 
+     */
+    private static parse(input: string): Record<string, any> {
+        const result: Record<string, any> = {};
+        const parts = input.split('|');
+
+        parts.forEach(part => {
+            const [key, value] = part.split(':');
+            if (value === undefined) {
+                result[key] = true; // If no value provided, set it as true
+            } else if (!isNaN(Number(value))) {
+                result[key] = Number(value); // If value is a number, parse it as number
+            } else if (value.startsWith('[') && value.endsWith(']')) {
+                result[key] = JSON.parse(value); // If value is an array, parse it as array
+            } else if (value === 'true') {
+                result[key] = true; // If value is 'true', set it as true
+            } else if (value === 'false') {
+                result[key] = false; // If value is 'false', set it as false
+            } else if (key === 'regex') {
+                result[key] = new RegExp(value);
+            } else {
+                result[key] = value; // Otherwise, set it as string
+            }
+        });
+
+        return result;
+    }
 }
