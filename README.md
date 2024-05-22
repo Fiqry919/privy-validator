@@ -49,12 +49,18 @@ import Validator from 'privy-validator';
 <br/><br/>
 
 ## Schema
-Here is a list of schemas that are currently available
+Here is a list of schemas that are currently available.
+
+now is support schema string or object
 
 ### Required
 schema required is a schema that indicates the value must exist not contain `undefined` | `""`. types required consist of `boolean` | `undefined` when this undefined then it is not required. Here's the usage required :
 ```javascript
 Validator.make(request.body, { foo: { required: true } });
+
+// or
+
+Validator.make(request.body, {foo: 'required'})
 ```
 then when got an error message
 ```js
@@ -69,6 +75,10 @@ type: 'string' | 'number' | 'object' | 'array' | 'email' | 'date'
 because types should be consistent, therefore types must be defined, cannot be undefined. Here's the usage type :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string' } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string' });
 ```
 then when got an error message
 ```js
@@ -79,6 +89,10 @@ then when got an error message
 schema min is a schema that indicates the length of the value must be more than or equal to minimum, this schema consist of `number` | `undefined`. Here's the usage min :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string', min: 8 } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string|min:8' });
 ```
 because min calculates from its length, then can work well when type `string` | `array`. then when got an error message and the next error message will be similar.
 ```js
@@ -89,18 +103,30 @@ because min calculates from its length, then can work well when type `string` | 
 schema max is a schema that indicates the length of the value must be less than or equal to maximum, this schema similar to schema min. Here's the usage max :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string', max: 60 } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string|max:60' });
 ```
 
 ### Digits
 schema digits is a schema that indicates the length of the number must be equal, this schema consist of `number` | `undefined`. Here's the usage digits :
 ```javascript
 Validator.make(request.body, { foo: { type: 'number', digits: 10 } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:number|digits:10' });
 ```
 
 ### Before
 schema before is a schema to ensure that the value must be less than before, so it is suitable for use on date types, this schema consist of `string` | `undefined`. Here's the usage before :
 ```javascript
 Validator.make(request.body, { foo: { type: 'date', before: '2021-01-19' } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:date|before:2021-01-19' });
 ```
 then the valid value for the case is less than 2021-01-19, note make sure the date format should be <b>yyyy-MM-dd</b>.
 
@@ -108,6 +134,10 @@ then the valid value for the case is less than 2021-01-19, note make sure the da
 schema after is a schema to ensure that the value must be more than after, this schema inverse of schema before, Here's the usage after :
 ```javascript
 Validator.make(request.body, { foo: { type: 'date', after: '2021-01-19' } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:date|after:2021-01-19' });
 ```
 then the valid value for the case is more than 2021-01-19.
 
@@ -115,13 +145,21 @@ then the valid value for the case is more than 2021-01-19.
 schema included is schema to ensures the value must be inside the inclusion. this schema consist of `any[]` | `undefined`. Here's the usage included :
 ```javascript
 Validator.make(request.body, { foo: { type: 'number', in: [1, 2, 3, 4, 5] } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:number|in:[1,2,3,4,5]' });
 ```
 when the value is not in the inclusion is considered invalid.
 
 ### Not included
 schema not included is schema to ensures the value must be not inside the inclusion. this schema inverse of schema included. Here's the usage not included :
 ```javascript
-Validator.make(request.body, { foo: { type: 'string', notIn: ['Foo', 'Bar', 'Cat', 'Dog'] } });
+Validator.make(request.body, { foo: { type: 'string', notIn: ['Cat', 'Dog'] } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string|notIn:["Cat", "Dog"]' });
 ```
 when the value is on inclusion is considered invalid.
 
@@ -129,6 +167,10 @@ when the value is on inclusion is considered invalid.
 schema between is a schema that ensures the value must be in between. this schema consist of `number[]` | `undefined` which when defined must contain 2 number min and max values, Here's the usage between :
 ```javascript
 Validator.make(request.body, { foo: { type: 'number', between: [1, 10] } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:number|between:[1,10]' });
 ```
 then a valid value is between 1 - 10.
 
@@ -137,6 +179,10 @@ then a valid value is between 1 - 10.
 schema date between is a schema that ensures the value must be in between with date type. this schema consist of `string[]` | `undefined` which when defined must contain 2 date min and date max values with a format yyyy-MM-dd. Here's the usage date between :
 ```javascript
 Validator.make(request.body, { foo: { type: 'date', dateBetween: ['2019-01-19', '2019-01-30'] } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:date|dateBetween:["2019-01-19", "2019-01-30"]' });
 ```
 then the valid date is between 2019-01-19 to 2019-01-30.
 
@@ -145,6 +191,10 @@ then the valid date is between 2019-01-19 to 2019-01-30.
 schema digits between is a schema that ensures the value length of a number must be in between. this schema consist of `number[]` | `undefined` which when defined must contain 2 number min and max values. Here's the usage digits between :
 ```javascript
 Validator.make(request.body, { foo: { type: 'number', digitsBetween: [8, 12] } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:number|digitsBetween:[8,12]'});
 ```
 then the number length of a value must be between 8 to 12 digits.
 
@@ -152,6 +202,10 @@ then the number length of a value must be between 8 to 12 digits.
 schema regex is a schema that ensures the value must match with regex, this schema consist of `any` | `undefined`. Here's the usage regex :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string', regex: /^\d{4}-\d{2}-\d{2}$/ } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string|regex:/^\d{4}-\d{2}-\d{2}$/' });
 ```
 this schema can be used to validate phone numbers, passwords, etc. note regex can run properly when without quotes.
 
@@ -159,6 +213,10 @@ this schema can be used to validate phone numbers, passwords, etc. note regex ca
 schema confirmed is a schema that ensures the value must match with target field. this schema consist of `boolean` | `undefined`. Here's the usage confirmed :
 ```javascript
 Validator.make(request.body, { foo: { type: 'string', confirmed: true } });
+
+// or
+
+Validator.make(request.body, { foo: 'type:string|confirmed' });
 ```
 then the field with the name `foo_confirmation` must match with field `foo`.
 
@@ -247,8 +305,8 @@ its use you can use it as middleware or on function such as controller. Here is 
 ```javascript
 async function foo_middleware(request, response, next) {
     const validator = await Validator.make(request.body, {
-        foo: { required: true, type: 'string' },
-        bar: { required: true, type: 'string', min:8, max: 60 }
+        foo: 'required|type:string',
+        bar: 'required|type:string|min:8|max:60'
     });
 
     if (!validator.validate()) {
@@ -265,8 +323,8 @@ app.post('/foo', foo_middleware, /** your next function/ controllers */);
 ```javascript
 function bar_middleware(request, response, next) {
     Validator.make(request.body, {
-        foo: { required: true, type: 'string' },
-        bar: { required: true, type: 'string', min:8, max: 60 }
+        foo: 'required|type:string',
+        bar: 'required|type:string|min:8|max:60'
     }).then((result) => {
         if(!result.validate()) {
             return response.status(400).json({ errors: result.errors() });
