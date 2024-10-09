@@ -1,5 +1,6 @@
 import { ValidationSchema, CustomMessage, Message, ValidationErrors, Schema } from "./interfaces/validator"
 import { dateRange, isDataType, isDate, isEmail, parseDigit } from "./common/validator";
+import regexPatterns from "./common/regex";
 
 export default class Validator<T> {
     private constructor(private state: boolean, private error: { [key in keyof T]?: string[] }) { }
@@ -71,6 +72,19 @@ export default class Validator<T> {
                     const type = schema.type;
                     error.push(this.setError(customMessage?.[attribute]?.type || customMessage?.["*"]?.type || Message.TYPE, attribute, { type }));
                 }
+
+                /**
+                 * regex pettern type
+                 */
+                if (schema?.type && (`${schema.type}Regex` in regexPatterns)) {
+                    const type = schema.type;
+                    const typeWithRegex = `${schema.type}Regex`;
+                    const regex = regexPatterns[typeWithRegex as keyof typeof regexPatterns];
+                    if (!regex.test(entries)) {
+                        error.push(this.setError(customMessage?.[attribute]?.type || customMessage?.["*"]?.type || Message.TYPE, attribute, { type }));
+                    }
+                }
+
                 /**
                  * min
                  */

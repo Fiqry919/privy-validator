@@ -70,9 +70,20 @@ then when got an error message
 ### Type
 a type schema is a schema that specifies what type of data a value should be, for now schema types consist of
 ```javascript
-type: 'string' | 'number' | 'object' | 'array' | 'email' | 'date'
+type: 'string' | 'number' | 'object' | 'array' | 'email' | 'date' | ...
 ```
+
+| Tag | Description |
+| - | - |
+| alpha | Alpha Only |
+| alphaNumeric | Alphanumeric |
+| alphaUnicodeNumeric | Alphanumeric Unicode |
+| alphaUnicode | Alpha Unicode |
+| ascii | ASCII |
+| and more.. |      |
+
 because types should be consistent, therefore types must be defined, cannot be undefined. Here's the usage type :
+
 ```javascript
 Validator.make(request.body, { foo: { type: 'string' } });
 

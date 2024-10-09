@@ -1,3 +1,5 @@
+import { KeyRegexPatterns, RegexSchema } from "../common/regex"
+
 export enum Message {
     /**
      * required message
@@ -80,7 +82,7 @@ export type List<T, L extends number, TO = [T, ...Array<T>]> = Pick<TO, Exclude<
 /**
  * validation schema
  */
-export interface Schema {
+export interface Schema extends RegexSchema {
     /**
      * required is a schema that indicates the value must exist not contain `undefined` | `""`. 
      * types required consist of `boolean` | `undefined` 
@@ -99,7 +101,7 @@ export interface Schema {
      * Validator.make(request.body, { foo: { type: 'string' }});
      * ```
      */
-    type: 'string' | 'number' | 'object' | 'array' | 'email' | 'date'
+    type: 'string' | 'number' | 'object' | 'array' | 'email' | 'date' | KeyRegexPatterns
     /**
      * min is a schema that indicates the length of the value must be more than or equal to minimum, 
      * this schema consist of `number` | `undefined`. 
